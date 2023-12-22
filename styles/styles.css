@@ -23,7 +23,7 @@ body {
 }
 
 .bg-color2 {
-    background-color: grey;
+    background-color: var(--blue);
 }
 
 .flex {
@@ -80,6 +80,10 @@ body {
     width: 37%;
 }
 
+.width-30 {
+    width: 30%;
+}
+
 .width-45 {
     width: 45%;
 }
@@ -104,13 +108,29 @@ body {
     gap: 7px;
 }
 
+.gap-5px {
+    gap: 5px;
+}
+
 .gap-1em {
     gap: 1em;
+}
+
+hr {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: calc(50% - 7px);
 }
 
 .height-100 {
     height: 100%;
 }
+
+.height-99 {
+    height: 99%;
+}
+
 
 .height-50 {
     height: 50%;
@@ -121,7 +141,9 @@ nav img {
 }
 
 .screen-container {
-    padding: 20px;
+    background-color: var(--primary);
+    margin-left: 8px;
+    margin-right: 8px;
 }
 
 .search {
@@ -129,7 +151,7 @@ nav img {
 }
 
 .searchIcon {
-    right: calc(50% - 59px);
+    right: calc(50% - 12px);
 }
 
 .bottom {
@@ -141,14 +163,21 @@ nav img {
 }
 
 .day {
-    width: 151px;
+    width: 154px;
+    cursor: pointer;
     bottom: 0;
     left: 0;
+    background-color: #e6e6e68c;
+}
+
+.day:nth-child(1) {
+    background-color: var(--primary);
 }
 
 .days {
     bottom: 14px;
-    left: 7px;
+    width: 98%;
+    left: 3.5px;
 }
 
 .dayTitle {
@@ -161,4 +190,89 @@ nav img {
 
 .percetageHumidity img {
     color: var(--blue);
+}
+
+.soon {
+    left: calc(50% - 33px);
+    top: calc(50% - 36px);
+    font-size: x-large;
+    color: #b9b9b9;
+    z-index: 1;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.history {
+    width: 160px;
+    background-color: var(--white);
+    top: 37px;
+    left: 0;
+    padding: 2px 0px;
+    border-radius: 10px;
+}
+
+.history small {
+    background-color: var(--blue);
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    padding: 1px;
+}
+
+@media only screen and (max-width: 1117px) {
+
+    .screen-container {
+        width: 491px;
+        height: 99%;
+    }
+
+    .searchIcon {
+        left: calc(50% - -34px);
+    }
+
+    .search {
+        width: 167px;
+    }
+
+    .days {
+        bottom: 14px;
+        width: 98%;
+        left: 7px;
+    }
+
+    .history {
+        width: 200px;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+
+    .screen-container {
+        width: 100%;
+        height: 99%;
+    }
+
+    .searchIcon {
+        left: calc(100% - 23px);
+        top: 24px;
+    }
+
+    .search {
+        padding: 0px;
+    }
+
+    .day {
+        width: 216px;
+    }
+
+    .days {
+        left: 4.8px;
+        width: 98.7%;
+    }
+
+    .history {
+        width: 160px;
+    }
 }
