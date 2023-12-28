@@ -5,8 +5,11 @@
     --white: #ffffff;
     --blue: #024b8c;
     --light-blue: rgb(101 173 217);
+    --extra-light-blue: #a4c2e2;
     --brown: #686868;
     --dark_brown: #656565;
+    --black: #000000;
+    --purple: #6990bb;
 }
 
 body {
@@ -56,12 +59,36 @@ body {
     font-weight: 600;
 }
 
+.font-xlarge {
+    font-size: x-large;
+}
+
 .margin-0 {
     margin: 0;
 }
 
 .column {
     flex-direction: column;
+}
+
+.white-color {
+    color: var(--white);
+}
+
+.extra-blue-color {
+    color: var(--extra-light-blue);
+}
+
+.black-color {
+    color: var(--black);
+}
+
+.brown-color {
+    color: var(--brown);
+}
+
+.purple-color {
+    color: var(--purple);
 }
 
 .relative {
@@ -123,17 +150,8 @@ hr {
     top: calc(50% - 7px);
 }
 
-.height-100 {
-    height: 100%;
-}
-
-.height-99 {
-    height: 99%;
-}
-
-
-.height-50 {
-    height: 50%;
+.height-326px {
+    height: 326px;
 }
 
 nav img {
@@ -152,10 +170,6 @@ nav img {
 
 .searchIcon {
     right: calc(50% - 12px);
-}
-
-.bottom {
-    height: 170px;
 }
 
 .degree {
@@ -225,7 +239,6 @@ nav img {
 
     .screen-container {
         width: 491px;
-        height: 99%;
     }
 
     .searchIcon {
@@ -251,7 +264,6 @@ nav img {
 
     .screen-container {
         width: 100%;
-        height: 99%;
     }
 
     .searchIcon {
