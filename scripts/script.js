@@ -10,7 +10,13 @@ const todayHumidityIconElement = document.getElementById('todayHumidityIcon');
 const weatherImageElement = document.getElementById('weatherImage');
 const hrsElement = document.getElementById('hrs');
 const dayElement = document.getElementById('day');
+const windDirectionElement = document.getElementById('windDirection');
 let currentDate, currentHrs, currentMonth;
+const searchElement = document.getElementById('search');
+const searchValueElement = document.getElementById('searchValue');
+const searchHistoryElement = document.getElementById('searchHistory');
+const historyIconElement = document.getElementById('historyIcon');
+let searchHistoryPressed = false;
 
 // Function for determining current date day and hours
 const fetchDate = () => {
@@ -30,37 +36,37 @@ const fetchDate = () => {
 
     // Selecting correct month code description
     switch (monthCode) {
-        case 1:
+        case 0:
             monthDescription = 'JAN';
             break;
-        case 2:
+        case 1:
             monthDescription = 'FEB';
             break;
-        case 1:
+        case 2:
             monthDescription = 'MAR';
             break;
-        case 1:
+        case 3:
             monthDescription = 'APR';
             break;
-        case 1:
+        case 4:
             monthDescription = 'MAY';
             break;
-        case 1:
+        case 5:
             monthDescription = 'JUN';
             break;
-        case 1:
+        case 6:
             monthDescription = 'JUL';
             break;
-        case 1:
+        case 7:
             monthDescription = 'AUG';
             break;
-        case 1:
+        case 8:
             monthDescription = 'SEPT';
             break;
-        case 1:
+        case 9:
             monthDescription = 'OCT';
             break;
-        case 1:
+        case 10:
             monthDescription = 'NOV';
             break;
         default:
@@ -72,6 +78,64 @@ const fetchDate = () => {
     overAllDate = `${hrs}:${min},${monthDescription} ${date}`;
     return overAllDate;
 }
+
+// Function for determining wind direction base on degrees
+const windDirection = (deg) => {
+    let windDirection;
+    switch (deg) {
+        case (deg > 348.75 && deg <= 11.25):
+            windDirection = 'N';
+            break;
+        case (deg > 11.25 && deg <= 33.75):
+            windDirection = 'NNE';
+            break;
+        case (deg > 33.75 && deg <= 56.25):
+            windDirection = 'NE';
+            break;
+        case (deg > 56.25 && deg <= 78.75):
+            windDirection = 'ENE';
+            break;
+        case (deg > 78.75 && deg <= 101.25):
+            windDirection = 'E';
+            break;
+        case (deg > 101.25 && deg <= 123.75):
+            windDirection = 'ESE';
+            break;
+        case (deg > 123.75 && deg <= 146.25):
+            windDirection = 'SE';
+            break;
+        case (deg > 146.25 && deg <= 168.75):
+            windDirection = 'SSE';
+            break;
+        case (deg > 168.75 && deg <= 191.25):
+            windDirection = 'S';
+            break;
+        case (deg > 191.25 && deg <= 213.75):
+            windDirection = 'SSW';
+            break;
+        case (deg > 213.75 && deg <= 236.25):
+            windDirection = 'SW';
+            break;
+        case (deg > 236.25 && deg <= 258.75):
+            windDirection = 'WSW';
+            break;
+        case (deg > 258.75 && deg <= 281.25):
+            windDirection = 'W';
+            break;
+        case (deg > 281.25 && deg <= 303.75):
+            windDirection = 'WNW';
+            break;
+        case (deg > 303.75 && deg <= 326.25):
+            windDirection = 'NW';
+            break;
+        default:
+            windDirection = 'NNW';
+            break;
+    }
+    console.log(windDirection);
+}
+
+windDirection(30);
 
 // Get date and show it accordinly for the first time
 currentDate = fetchDate().split(',');
@@ -88,22 +152,10 @@ setInterval(() => {
     currentMonth = currentDate[1];
     hrsElement.innerHTML = currentHrs;
     dayElement.innerHTML = currentMonth;
-},30000);
+}, 30000);
 
-// Get latitude and longitude coordinates and run program asynchonized
-navigator.geolocation.getCurrentPosition(position => {
-    const longitude = position.coords.longitude;
-    const latitude = position.coords.latitude;
-    const API_KEY = 'fab7d6b47407d50fc3717d24c6006b4a';
-    const celsiusUnits = 'metric';
-
-    const API_CALL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=${celsiusUnits}`;
-
-    fetch(API_CALL)
-        .then(response => response.json())
-        .then(weatherData => {
-            console.log(weatherData);
-            weatherElement.innerHTML = `<div class="flex gap-7px a-center">
+const showWeatherData = (weatherData) => {
+    weatherElement.innerHTML = `<div class="flex gap-7px a-center">
                                         <img src="../icons/star_FILL0_wght400_GRAD0_opsz24.svg" alt="Icon for showing city location">
                                         <h3>${weatherData.name}, <sub title="Weather condition">${weatherData.weather[0].main}</sub></h3>
                                     </div>
@@ -124,27 +176,66 @@ navigator.geolocation.getCurrentPosition(position => {
                                             </div>
                                         </div>
                                     </div>`
-            minTempElement.innerHTML = weatherData.main.temp_min + '°';
-            maxTempElement.innerHTML = weatherData.main.temp_max + '°';
-            todayMinElement.innerHTML = weatherData.main.temp_min + '°';
-            todayMaxElement.innerHTML = weatherData.main.temp_max + '°';
-            humidityElement.innerHTML = weatherData.main.humidity + '%'
-            weatherImageElement.src = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`
+    minTempElement.innerHTML = weatherData.main.temp_min + '°';
+    maxTempElement.innerHTML = weatherData.main.temp_max + '°';
+    todayMinElement.innerHTML = weatherData.main.temp_min + '°';
+    todayMaxElement.innerHTML = weatherData.main.temp_max + '°';
+    humidityElement.innerHTML = weatherData.main.humidity + '%'
+    weatherImageElement.src = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`
 
-            // Set humidity and change correct icon, 0 - 25% (low) 26% - 75% (mid) 76% - 100% (high)
-            todayHumidityElement.innerHTML = weatherData.main.humidity + '%';
-            if (weatherData.main.humidity < 26) {
-                humidityIconElement.src = "../icons/bluehumidity_low_FILL0_wght400_GRAD0_opsz24.svg";
-                todayHumidityIconElement.src = "../icons/todayhumidity_low_FILL0_wght400_GRAD0_opsz24.svg";
-            }
-            if (weatherData.main.humidity < 76) {
-                humidityIconElement.src = "../icons/bluehumidity_mid_FILL0_wght400_GRAD0_opsz24.svg";
-                todayHumidityIconElement.src = "../icons/todayhumidity_mid_FILL0_wght400_GRAD0_opsz24.svg";
-            } else {
-                humidityIconElement.src = "../icons/bluehumidity_high_FILL0_wght400_GRAD0_opsz24.svg";
-                todayHumidityIconElement.src = "../icons/todayhumidity_high_FILL0_wght400_GRAD0_opsz24.svg";
-            }
+    // Set humidity and change correct icon, 0 - 25% (low) 26% - 75% (mid) 76% - 100% (high)
+    todayHumidityElement.innerHTML = weatherData.main.humidity + '%';
+    if (weatherData.main.humidity < 26) {
+        humidityIconElement.src = "../icons/bluehumidity_low_FILL0_wght400_GRAD0_opsz24.svg";
+        todayHumidityIconElement.src = "../icons/todayhumidity_low_FILL0_wght400_GRAD0_opsz24.svg";
+    }
+    if (weatherData.main.humidity < 76) {
+        humidityIconElement.src = "../icons/bluehumidity_mid_FILL0_wght400_GRAD0_opsz24.svg";
+        todayHumidityIconElement.src = "../icons/todayhumidity_mid_FILL0_wght400_GRAD0_opsz24.svg";
+    } else {
+        humidityIconElement.src = "../icons/bluehumidity_high_FILL0_wght400_GRAD0_opsz24.svg";
+        todayHumidityIconElement.src = "../icons/todayhumidity_high_FILL0_wght400_GRAD0_opsz24.svg";
+    }
 
-        })
+}
+
+// Get latitude and longitude coordinates and run program asynchonized
+navigator.geolocation.getCurrentPosition(position => {
+    const longitude = position.coords.longitude;
+    const latitude = position.coords.latitude;
+    const API_KEY = 'fab7d6b47407d50fc3717d24c6006b4a';
+
+    const API_CALL = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`;
+
+    fetch(API_CALL)
+        .then(response => response.json())
+        .then(weatherData => showWeatherData(weatherData))
         .catch(error => console.log(error));
+})
+
+
+// EVENT LISTENERS
+searchElement.addEventListener('click', () => {
+    if (!searchValueElement.value) return;
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchValueElement.value}&appid=fab7d6b47407d50fc3717d24c6006b4a&units=metric`)
+        .then(promise => promise.json())
+        .then(weatherData => {
+            showWeatherData(weatherData);
+            searchValueElement.value = '';
+        })
+        .catch(error => {
+            console.log('CITY DOES NOT EXIST');
+            alert('CITY DOES NOT EXIST');
+            searchValueElement.value = '';
+        });
+})
+
+historyIconElement.addEventListener('click', () => {
+    // Hide and show history based on icon click first and second time
+    searchHistoryPressed = !searchHistoryPressed;
+    if(searchHistoryPressed) {
+        searchHistoryElement.classList.remove('hidden');
+    } else {
+        searchHistoryElement.classList.add('hidden');
+    }
 })
