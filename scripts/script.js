@@ -16,7 +16,14 @@ const searchElement = document.getElementById('search');
 const searchValueElement = document.getElementById('searchValue');
 const searchHistoryElement = document.getElementById('searchHistory');
 const historyIconElement = document.getElementById('historyIcon');
+const windDirectionArrowElement = document.getElementById('windDirectionArrow');
 let searchHistoryPressed = false;
+let searchHistory = [];
+
+// Check local storage for search history
+if (localStorage.citySearches) searchHistory = JSON.parse(localStorage.citySearches);
+
+
 
 // Function for determining current date day and hours
 const fetchDate = () => {
@@ -82,60 +89,41 @@ const fetchDate = () => {
 // Function for determining wind direction base on degrees
 const windDirection = (deg) => {
     let windDirection;
-    switch (deg) {
-        case (deg > 348.75 && deg <= 11.25):
-            windDirection = 'N';
-            break;
-        case (deg > 11.25 && deg <= 33.75):
-            windDirection = 'NNE';
-            break;
-        case (deg > 33.75 && deg <= 56.25):
-            windDirection = 'NE';
-            break;
-        case (deg > 56.25 && deg <= 78.75):
-            windDirection = 'ENE';
-            break;
-        case (deg > 78.75 && deg <= 101.25):
-            windDirection = 'E';
-            break;
-        case (deg > 101.25 && deg <= 123.75):
-            windDirection = 'ESE';
-            break;
-        case (deg > 123.75 && deg <= 146.25):
-            windDirection = 'SE';
-            break;
-        case (deg > 146.25 && deg <= 168.75):
-            windDirection = 'SSE';
-            break;
-        case (deg > 168.75 && deg <= 191.25):
-            windDirection = 'S';
-            break;
-        case (deg > 191.25 && deg <= 213.75):
-            windDirection = 'SSW';
-            break;
-        case (deg > 213.75 && deg <= 236.25):
-            windDirection = 'SW';
-            break;
-        case (deg > 236.25 && deg <= 258.75):
-            windDirection = 'WSW';
-            break;
-        case (deg > 258.75 && deg <= 281.25):
-            windDirection = 'W';
-            break;
-        case (deg > 281.25 && deg <= 303.75):
-            windDirection = 'WNW';
-            break;
-        case (deg > 303.75 && deg <= 326.25):
-            windDirection = 'NW';
-            break;
-        default:
-            windDirection = 'NNW';
-            break;
+    if (deg > 348.75 && deg <= 11.25) {
+        windDirection = 'N';
+    } else if (deg > 11.25 && deg <= 33.75) {
+        windDirection = 'NNE';
+    } else if (deg > 33.75 && deg <= 56.25) {
+        windDirection = 'NE';
+    } else if (deg > 56.25 && deg <= 78.75) {
+        windDirection = 'ENE';
+    } else if (deg > 78.75 && deg <= 101.25) {
+        windDirection = 'E';
+    } else if (deg > 101.25 && deg <= 123.75) {
+        windDirection = 'ESE';
+    } else if (deg > 123.75 && deg <= 146.25) {
+        windDirection = 'SE';
+    } else if (deg > 146.25 && deg <= 168.75) {
+        windDirection = 'SSE';
+    } else if (deg > 168.75 && deg <= 191.25) {
+        windDirection = 'S';
+    } else if (deg > 191.25 && deg <= 213.75) {
+        windDirection = 'SSW';
+    } else if (deg > 213.75 && deg <= 236.25) {
+        windDirection = 'SW';
+    } else if (deg > 236.25 && deg <= 258.75) {
+        windDirection = 'WSW';
+    } else if (deg > 258.75 && deg <= 281.25) {
+        windDirection = 'W';
+    } else if (deg > 281.25 && deg <= 303.75) {
+        windDirection = 'WNW';
+    } else if (deg > 303.75 && deg <= 326.25) {
+        windDirection = 'NW';
+    } else {
+        windDirection = 'NNW';
     }
-    console.log(windDirection);
+    return windDirection;
 }
-
-windDirection(30);
 
 // Get date and show it accordinly for the first time
 currentDate = fetchDate().split(',');
@@ -180,8 +168,12 @@ const showWeatherData = (weatherData) => {
     maxTempElement.innerHTML = weatherData.main.temp_max + '°';
     todayMinElement.innerHTML = weatherData.main.temp_min + '°';
     todayMaxElement.innerHTML = weatherData.main.temp_max + '°';
-    humidityElement.innerHTML = weatherData.main.humidity + '%'
-    weatherImageElement.src = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`
+    humidityElement.innerHTML = weatherData.main.humidity + '%';
+    weatherImageElement.src = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`;
+    let degreeDirection = windDirection(weatherData.wind.deg);
+    windDirectionElement.innerHTML = degreeDirection;
+    let arrowDirection = 90 + weatherData.wind.deg;
+    windDirectionArrowElement.style.rotate = `${arrowDirection}deg`;
 
     // Set humidity and change correct icon, 0 - 25% (low) 26% - 75% (mid) 76% - 100% (high)
     todayHumidityElement.innerHTML = weatherData.main.humidity + '%';
@@ -213,6 +205,18 @@ navigator.geolocation.getCurrentPosition(position => {
         .catch(error => console.log(error));
 })
 
+// FUNCTIONS
+
+const searchHistorySearch = (indx) => {
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchHistory[indx]}&appid=fab7d6b47407d50fc3717d24c6006b4a&units=metric`)
+        .then(promise => promise.json())
+        .then(weatherData => {
+            showWeatherData(weatherData);
+            // Hide search history bar after searching
+            searchHistoryElement.classList.add('hidden');
+        })
+}
+
 
 // EVENT LISTENERS
 searchElement.addEventListener('click', () => {
@@ -221,7 +225,18 @@ searchElement.addEventListener('click', () => {
         .then(promise => promise.json())
         .then(weatherData => {
             showWeatherData(weatherData);
+            if (searchHistory.length > 0) {
+                if (searchHistory.find((city) => searchValueElement.value === city)) {
+
+                } else {
+                    searchHistory.push(searchValueElement.value);
+                    localStorage.setItem('citySearches', JSON.stringify(searchHistory));
+                }
+            }
+            localStorage.setItem('citySearches', JSON.stringify(searchHistory));
             searchValueElement.value = '';
+            // Hide search history bar in case its open
+            searchHistoryElement.classList.add('hidden');
         })
         .catch(error => {
             console.log('CITY DOES NOT EXIST');
@@ -231,11 +246,45 @@ searchElement.addEventListener('click', () => {
 })
 
 historyIconElement.addEventListener('click', () => {
+    // If you've never searched anything before
+    if (searchHistory.length === 0) return;
     // Hide and show history based on icon click first and second time
     searchHistoryPressed = !searchHistoryPressed;
-    if(searchHistoryPressed) {
+    if (searchHistoryPressed) {
         searchHistoryElement.classList.remove('hidden');
     } else {
         searchHistoryElement.classList.add('hidden');
+    }
+    // Reset the showing of cities everytime before map
+    searchHistoryElement.innerHTML = '';
+    searchHistory.reverse().map((city, indx) => {
+        searchHistoryElement.innerHTML += `<small <id="historyCity_${indx}" class="margin-0" onclick="searchHistorySearch(${indx})">${city}</small>`;
+    })
+})
+
+searchValueElement.addEventListener('keypress', (event) => {
+    if (event.keyCode === 13) {
+        if (!searchValueElement.value) return;
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchValueElement.value}&appid=fab7d6b47407d50fc3717d24c6006b4a&units=metric`)
+            .then(promise => promise.json())
+            .then(weatherData => {
+                showWeatherData(weatherData);
+                if (searchHistory.length > 0) {
+                    if (searchHistory.find((city) => searchValueElement.value === city)) {
+
+                    } else {
+                        searchHistory.push(searchValueElement.value);
+                        localStorage.setItem('citySearches', JSON.stringify(searchHistory));
+                    }
+                }
+                searchValueElement.value = '';
+                // Hide search history bar in case its open
+                searchHistoryElement.classList.add('hidden');
+            })
+            .catch(error => {
+                console.log('CITY DOES NOT EXIST');
+                alert('CITY DOES NOT EXIST');
+                searchValueElement.value = '';
+            });
     }
 })

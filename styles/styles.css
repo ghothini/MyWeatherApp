@@ -235,6 +235,10 @@ nav img {
     padding: 1px;
 }
 
+.degreeRotate {
+    rotate: 90deg;
+}
+
 @media only screen and (max-width: 1117px) {
 
     .screen-container {
@@ -257,6 +261,8 @@ nav img {
 
     .history {
         width: 200px;
+        max-height: 188px;
+        overflow-y: auto;
     }
 }
 
