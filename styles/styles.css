@@ -294,3 +294,37 @@ nav img {
         width: 160px;
     }
 }
+
+@media only screen and (max-width: 400px) {
+    .time-400, .weather400, .temp-400, .container-400, .nav-400 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container-400 {
+        justify-content: space-between;
+    }
+
+    .p-400 {
+        text-align: center;
+    }
+
+    .days-400 {
+        display: none;
+    }
+
+    .container-2-400 {
+        padding-top: 202px;
+    }
+
+    .searchIcon img {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 300px) {
+    .container-2-400 {
+        padding-top: 284px;
+    }
+}
+

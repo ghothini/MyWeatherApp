@@ -11,8 +11,8 @@
 <body>
     <div class="main-container flex center-center">
         <div class="screen-container width-30 flex column">
-            <div class="padding-10-20">
-                <nav class="flex space-between relative">
+            <div class="padding-10-20 container-2-400">
+                <nav class="flex space-between relative nav-400">
                     <img id="historyIcon" src="../icons/history_FILL0_wght400_GRAD0_opsz24.svg" alt="See your search weather history">
                     <input id="searchValue" class="search" type="text" placeholder="SEARCH WITH CITY NAME">
                     <div id="search" class="searchIcon absolute">
@@ -27,19 +27,19 @@
                 <div id="weather" class="weather">
                     <div class="flex gap-7px a-center">
                         <img src="../icons/star_FILL0_wght400_GRAD0_opsz24.svg" alt="Icon for showing city location">
-                        <h3>Unknown city, <sub title="Weather condition">weather</sub></h3>
+                        <h3 class="p-400">Unknown city, <sub title="Weather condition">weather</sub></h3>
                     </div>
-                    <div class="flex">
+                    <div class="flex weather400">
                         <div class="width-55">
                             <img src="../images/10d@2x.png"
                                 alt="Icon image to show current weather description">
-                            <p class="margin-0" title="Weather description">Unknown description</p>
+                            <p class="margin-0 p-400" title="Weather description">Unknown description</p>
                         </div>
                         <div class="width-45">
                             <h1 class="degree margin-0 font-xxxlarge"><s>0</s>°</h1>
                             <div class="flex column">
-                                <p class="margin-0" title="Human perception of weather">Feels like <s>0</s>°</p>
-                                <div class="flex gap-5px">
+                                <p class="margin-0 p-400" title="Human perception of weather">Feels like <s>0</s>°</p>
+                                <div class="flex gap-5px time-400">
                                     <p id="hrs" class="margin-0">0:00</p>
                                     <p class="margin-0">-</p>
                                     <p id="day" class="margin-0">JAN 0</p>
@@ -49,8 +49,8 @@
                     </div>
                 </div>
             </div>
-            <div class="height-326px bg-color2 padding-10-20 flex relative white-color">
-                <div class="flex gap-1em width-55">
+            <div class="height-326px bg-color2 padding-10-20 flex relative white-color container-400">
+                <div class="flex gap-1em width-55 temp-400">
                     <div class="flex column gap-1em a-center">
                         <p id="minTemp" class="margin-0 font-xlarge  extra-blue-color">0°</p>
                         <p class="margin-0">Min Temp</p>
@@ -70,12 +70,12 @@
                             alt="Humility mid icon">
                         <p class="margin-0 white-color"><b id="humidity" class=" extra-blue-color">0%</b> humidity</p>
                     </div>
-                    <div class="flex gap-7px">
+                    <!-- <div class="flex gap-7px">
                         <img src="../icons/bluehumidity_low_FILL0_wght400_GRAD0_opsz24.svg" alt="Humility low icon">
-                        <p class="margin-0 white-color">No rain since 9am</p>
-                    </div>
+                        <p class="margin-0 white-color p-400"><s>No rain since 9am</s></p>
+                    </div> -->
                 </div>
-                <div class="absolute flex days gap-7px">
+                <div class="absolute flex days gap-7px days-400">
                     <div class="flex column a-center bg-color day relative">
                         <p class="margin-0 dayTitle">Today</p>
                         <img id="weatherImage" src="../images/10d@2x.png" alt="">

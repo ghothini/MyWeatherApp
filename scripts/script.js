@@ -147,16 +147,16 @@ const showWeatherData = (weatherData) => {
                                         <img src="../icons/star_FILL0_wght400_GRAD0_opsz24.svg" alt="Icon for showing city location">
                                         <h3>${weatherData.name}, <sub title="Weather condition">${weatherData.weather[0].main}</sub></h3>
                                     </div>
-                                    <div class="bottom flex">
+                                    <div class="bottom flex weather400">
                                         <div class="width-55">
                                             <img src="https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png" alt="Icon image to show current weather description">
-                                            <p class="margin-0" title="Weather description">${weatherData.weather[0].description}</p>
+                                            <p class="margin-0 p-400" title="Weather description">${weatherData.weather[0].description}</p>
                                         </div>
                                         <div class="width-45">
                                             <h1 class="degree margin-0 font-xxxlarge">${weatherData.main.temp}°</h1>
                                             <div class="flex column">
-                                                <p class="margin-0" title="Human perception of weather">Feels like ${weatherData.main.feels_like}°</p>
-                                                <div class="flex gap-5px">
+                                                <p class="margin-0 p-400" title="Human perception of weather">Feels like ${weatherData.main.feels_like}°</p>
+                                                <div class="flex gap-5px time-400">
                                                     <p id="hrs" class="margin-0">${currentHrs}</p>
                                                     <p class="margin-0">-</p>
                                                     <p id="day" class="margin-0">${currentMonth}</p>
