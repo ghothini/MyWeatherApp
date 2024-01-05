@@ -14,9 +14,12 @@
             <div class="padding-10-20 container-2-400">
                 <nav class="flex space-between relative nav-400">
                     <img id="historyIcon" src="../icons/history_FILL0_wght400_GRAD0_opsz24.svg" alt="See your search weather history">
-                    <input id="searchValue" class="search" type="text" placeholder="SEARCH WITH CITY NAME">
+                    <input id="searchValue" class="search" type="text" oninput="searchAssumption()" placeholder="SEARCH WITH CITY NAME">
                     <div id="search" class="searchIcon absolute">
                         <img src="../icons/search_FILL0_wght400_GRAD0_opsz24.svg" alt="Get weather based on city name">
+                    </div>
+                    <div class="searchAssumption absolute">
+                        <p id="searchAssumption" class="margin-0 pointer"></p>
                     </div>
 
                     <!-- Only show when clicked history icon -->

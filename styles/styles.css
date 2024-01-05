@@ -79,8 +79,18 @@ body {
     color: var(--extra-light-blue);
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .black-color {
     color: var(--black);
+}
+
+.searchAssumption {
+    width: 194px;
+    right: 3px;
+    bottom: -24px
 }
 
 .brown-color {
@@ -253,6 +263,10 @@ nav img {
         width: 167px;
     }
 
+    .searchAssumption {
+        right: 0;
+    }
+
     .days {
         bottom: 14px;
         width: 98%;
@@ -281,6 +295,11 @@ nav img {
         padding: 0px;
     }
 
+    .searchAssumption {
+        width: 171px;
+        right: 0;
+        bottom: -24px
+    }
     .day {
         width: 216px;
     }
@@ -296,13 +315,22 @@ nav img {
 }
 
 @media only screen and (max-width: 400px) {
-    .time-400, .weather400, .temp-400, .container-400, .nav-400 {
+
+    .time-400,
+    .weather400,
+    .temp-400,
+    .container-400,
+    .nav-400 {
         flex-direction: column;
         align-items: center;
     }
 
     .container-400 {
         justify-content: space-between;
+    }
+
+    .searchAssumption {
+        display: none;
     }
 
     .p-400 {
@@ -327,4 +355,3 @@ nav img {
         padding-top: 284px;
     }
 }
-

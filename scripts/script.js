@@ -17,12 +17,31 @@ const searchValueElement = document.getElementById('searchValue');
 const searchHistoryElement = document.getElementById('searchHistory');
 const historyIconElement = document.getElementById('historyIcon');
 const windDirectionArrowElement = document.getElementById('windDirectionArrow');
+const searchAssumptionElement = document.getElementById('searchAssumption');
 let searchHistoryPressed = false;
 let searchHistory = [];
 
 // Check local storage for search history
 if (localStorage.citySearches) searchHistory = JSON.parse(localStorage.citySearches);
 
+// Make search autocomplete from search history
+const searchAssumption = () => {
+    if (!searchHistory || !searchValueElement.value) {
+        searchAssumptionElement.innerHTML = '';
+        return;
+    };
+    
+    let match = searchHistory.find(city => searchValueElement.value === city.substring(0, searchValueElement.value.length))
+    if(!match) {
+        searchAssumptionElement.innerHTML = '';
+        return;
+    }
+    searchAssumptionElement.innerHTML = match;
+}
+
+searchValueElement.addEventListener('focusout', () => {
+    searchAssumptionElement.innerHTML = '';
+})
 
 
 // Function for determining current date day and hours
@@ -219,6 +238,7 @@ const searchHistorySearch = (indx) => {
 
 
 // EVENT LISTENERS
+
 searchElement.addEventListener('click', () => {
     if (!searchValueElement.value) return;
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchValueElement.value}&appid=fab7d6b47407d50fc3717d24c6006b4a&units=metric`)
